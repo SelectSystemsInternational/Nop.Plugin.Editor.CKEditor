@@ -1,0 +1,11 @@
+﻿{
+  "Group": "Editor",
+  "FriendlyName": "CKEditor",
+  "SystemName": "Editor.CKEditor",
+  "Version": "4.80.9.9",
+  "SupportedVersions": [ "4.80" ],
+  "Author": "Select Systems International - www.SelectSystems.com.au",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Editor.CKEditor.dll",
+  "Description": "This plugin allows you to install CKEditor as the default Rich Text Editor for Admin pages"
+}

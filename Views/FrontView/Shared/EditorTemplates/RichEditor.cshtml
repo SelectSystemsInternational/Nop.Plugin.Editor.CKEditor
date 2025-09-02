@@ -1,0 +1,88 @@
+﻿@model string
+
+@inject IPermissionService permissionService
+@inject AdminAreaSettings adminAreaSettings
+
+@using Nop.Core.Domain.Common
+@using Nop.Core
+@using Nop.Services.Security
+@using Nop.Web.Framework.UI
+
+@{
+    //we do not bundle this script file (does not work for some reasons in bundle)
+
+    var allowRoxyFileman = await permissionService.AuthorizeAsync(StandardPermission.System.HTML_EDITOR_MANAGE_PICTURES);
+
+    var random = CommonHelper.GenerateRandomInteger();
+
+    //extend editor with additional settings
+    //Sample setting value (below):
+    //settings.plugins.push('print'); settings.toolbar += ' | print';
+    var additionalEditorSettings = adminAreaSettings.RichEditorAdditionalSettings;
+    //is java-script supported?
+    var allowJavaScript = adminAreaSettings.RichEditorAllowJavaScript;
+
+    //allow HTML body? Full page? - http://www.tinymce.com/wiki.php/Plugin:fullpage
+    //false by default
+    var enableFullPage = Convert.ToBoolean(ViewData["nop.RichEditor.EnableFullPage"] ?? false);
+
+    var extended_valid_elements = new List<string>();
+    var valid_children = new List<string>();
+
+    if (allowJavaScript)
+    {
+        extended_valid_elements.Add("script[charset|defer|language|src|type]");
+        valid_children.Add("+body[script]");
+    }
+
+    if (adminAreaSettings.RichEditorAllowStyleTag)
+    {
+        extended_valid_elements.Add("style[dir<ltr?rtl|lang|media|title|type]");
+        extended_valid_elements.Add("link[dir<ltr?rtl|href|hreflang|lang|media|rel|rev|title|target|type]");
+
+        valid_children.Add("+body[style]");
+        valid_children.Add("+body[link]");
+    }
+}
+
+<!script src="/Plugins/SSI.Editor.CKEditor/Scripts/ckeditor/ckeditor.js"></!script>
+
+<textarea asp-for="@Model">@ViewData.TemplateInfo.FormattedModelValue</textarea>
+
+<script type="text/javascript">
+
+    var allow = '@allowRoxyFileman';
+    if (allow == "True") {
+        CKEDITOR.editorConfig = function (config) {
+            var roxyFilemanurl = '/Roxy_Fileman/fileman/index.html?integration=ckeditor';
+            config.filebrowserBrowseUrl = roxyFilemanurl;
+
+            if (roxyFilemanurl.indexOf("?") < 0) {
+                roxyFilemanurl += "?type=image";
+            } else {
+                roxyFilemanurl += "&type=image";
+            }
+
+            config.filebrowserImageBrowseUrl = roxyFilemanurl;
+            config.removeDialogTabs = 'link:upload;image:upload';
+        };
+
+        var roxyFileman = '@Url.Content("~/Plugins/SSI.Editor.CKEditor/Scripts/Roxy_Fileman/index.html")';
+        var url = roxyFileman;
+        if (url.indexOf("?") < 0) {
+            url += "?type=image";
+        }
+        else {
+            url += "&type=image";
+        }
+
+        CKEDITOR.replace("@Html.NameFor(model => model)", {
+            filebrowserBrowseUrl: roxyFileman,
+            filebrowserImageBrowseUrl: url,
+            removeDialogTabs: 'link:upload;image:upload'
+        });
+    }
+    else {
+        CKEDITOR.replace('@Html.NameFor(model => model)');
+    }
+</script>

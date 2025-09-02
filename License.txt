@@ -1,0 +1,12 @@
+CKEditor interface for nopCommerce
+Copyright (C) <2020>  <Select Systems International>
+
+This program contains third party software. To continue to use this software you must comply with the licensing agreements available at https://ckeditor.com/docs/ckeditor4/latest/guide/dev_license.html
+
+You can redistribute this software and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This third party software is subset of the interface and is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+
+See the GNU General Public License for more details.To obtain a copy of the GNU General Public License along with this program see <https://www.gnu.org/licenses/>.
+
+
