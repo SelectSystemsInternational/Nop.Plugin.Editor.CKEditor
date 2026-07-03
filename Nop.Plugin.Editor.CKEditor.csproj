@@ -13,9 +13,9 @@
     You need to set this parameter to true if your plugin has a nuget package 
     to ensure that the dlls copied from the NuGet cache to the output of your project-->
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
-    <Version>4.80.9.9</Version>
-    <AssemblyVersion>4.80.9.9</AssemblyVersion>
-    <FileVersion>4.80.9.9</FileVersion>
+    <Version>4.90.2.10</Version>
+    <AssemblyVersion>4.90.2.10</AssemblyVersion>
+    <FileVersion>4.90.2.10</FileVersion>
     <OutputPath>..\..\..\Presentation\Nop.Web\Plugins\SSI.Editor.CKEditor</OutputPath>
 	  <OutDir>$(OutputPath)</OutDir>
   </PropertyGroup>

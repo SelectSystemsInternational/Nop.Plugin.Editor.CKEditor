@@ -205,5 +205,6 @@ namespace Nop.Plugin.Editor.CKEditor.Controllers
         }
 
         #endregion
+
     }
 }
