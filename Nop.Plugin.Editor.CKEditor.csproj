@@ -13,11 +13,11 @@
     You need to set this parameter to true if your plugin has a nuget package 
     to ensure that the dlls copied from the NuGet cache to the output of your project-->
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
-    <Version>4.90.2.10</Version>
-    <AssemblyVersion>4.90.2.10</AssemblyVersion>
-    <FileVersion>4.90.2.10</FileVersion>
-    <OutputPath>..\..\..\Presentation\Nop.Web\Plugins\SSI.Editor.CKEditor</OutputPath>
-	  <OutDir>$(OutputPath)</OutDir>
+    <Version>4.90.4.10</Version>
+    <AssemblyVersion>4.90.4.10</AssemblyVersion>
+    <FileVersion>4.90.4.10</FileVersion>
+    <OutputPath>$(SolutionDir)\Presentation\Nop.Web\Plugins\SSI.Editor.CKEditor\</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
   </PropertyGroup>
   
   <ItemGroup>
@@ -34,21 +34,20 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  
+
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Presentation\Nop.Web\Nop.Web.csproj" />
-    <ClearPluginAssemblies Include="$(MSBuildProjectDirectory)\..\..\..\Build\ClearPluginAssemblies.proj" />
+    <ClearPluginAssemblies Include="$(SolutionDir)\Build\ClearPluginAssemblies.proj" />
+    <ProjectReference Include="$(SolutionDir)\Presentation\Nop.Web\Nop.Web.csproj" />
+    <ProjectReference Include="$(SolutionDir)\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj" />
   </ItemGroup>
-  
+    
   <!-- This target execute after "Build" target -->
   <Target Name="NopTarget" AfterTargets="Build">
     <!-- Delete unnecessary libraries from plugins path -->
-    <MSBuild Projects="@(ClearPluginAssemblies)" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
+    <MSBuild Projects="@(ClearPluginAssemblies)" Properties="PluginPath=$(OutDir)" Targets="NopClear" />
+    <!-- Delete extra folders and files from plugin output directory -->
+    <!-- RemoveDir Directories="$(OutDir)\refs;$(OutDir)\ref" -->
+    <!-- Delete Files="$(OutDir)\$(AssemblyName).deps.json;$(OutDir)\$(AssemblyName).pdb;$(OutDir)\$(AssemblyName).staticwebassets.runtime.json" -->
   </Target>
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties plugin_1json__JsonSchema="https://bitbucket.org/atlassianlabs/atlascode/raw/main/resources/schemas/pipelines-schema.json" />
-    </VisualStudio>
-  </ProjectExtensions>
 
 </Project>
