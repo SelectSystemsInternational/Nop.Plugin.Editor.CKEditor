@@ -146,7 +146,7 @@ namespace Nop.Plugin.Editor.CKEditor.Controllers
 
             string pKey = string.Empty;
             bool hasKey = false;
-            string key = publicKey != "" ? publicKey : _cKEditorSettings.PublicKey;
+            string key = !string.IsNullOrEmpty(publicKey) ? publicKey : _cKEditorSettings.PublicKey;
             if (key != null)
             {
                 if (key.ToString() == "c9d59e3a-ee08-427b-99a1-7967d291d66b") //System Key
@@ -155,7 +155,7 @@ namespace Nop.Plugin.Editor.CKEditor.Controllers
                 {
                     // Purchase Key
                     string sKey = _encryptionService.EncryptText("Licenced", key);
-                    pKey = (privateKey != "" ? privateKey : _cKEditorSettings.PrivateKey);
+                    pKey = (!string.IsNullOrEmpty(privateKey) ? privateKey : _cKEditorSettings.PrivateKey);
                     if (sKey != pKey)
                     {
                         _cKEditorSettings.PrivateKey = sKey;
@@ -172,7 +172,7 @@ namespace Nop.Plugin.Editor.CKEditor.Controllers
                     try
                     {
                         pKey = _encryptionService.EncryptText(urlInstall, key);
-                        if (pKey == (privateKey != "" ? privateKey : _cKEditorSettings.PrivateKey))
+                        if (pKey == (!string.IsNullOrEmpty(privateKey) ? privateKey : _cKEditorSettings.PrivateKey))
                         {
                             Guid guid = Guid.Parse(key);
                             DateTime keyDate = _systemHelper.GuidToDate(guid);
