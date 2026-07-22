@@ -154,7 +154,7 @@ namespace Nop.Plugin.Editor.CKEditor.Controllers
                 else if (key.ToString().Contains("4750b6dd-517b-4b03-a6e3-618053cab589"))
                 {
                     // Purchase Key
-                    string sKey = _encryptionService.EncryptText("Licenced", key);
+                    string sKey = _encryptionService.EncryptText("Licence", key);
                     pKey = (!string.IsNullOrEmpty(privateKey) ? privateKey : _cKEditorSettings.PrivateKey);
                     if (sKey != pKey)
                     {
