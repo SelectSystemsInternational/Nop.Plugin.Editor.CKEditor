@@ -25,6 +25,7 @@
     //allow HTML body? Full page? - http://www.tinymce.com/wiki.php/Plugin:fullpage
     //false by default
     var enableFullPage = Convert.ToBoolean(ViewData["nop.RichEditor.EnableFullPage"] ?? false);
+    var contentsCss = ViewData["nop.RichEditor.ContentsCss"]?.ToString() ?? string.Empty;
 
     var extended_valid_elements = new List<string>();
     var valid_children = new List<string>();
@@ -52,6 +53,12 @@
 <script type="text/javascript">
 
     var allow = '@allowRoxyFileman';
+    var contentsCss = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(contentsCss));
+    var editorOptions = {};
+
+    if (contentsCss) {
+        editorOptions.contentsCss = ['/Plugins/SSI.Editor.CKEditor/Scripts/ckeditor/contents.css', 'data:text/css;charset=utf-8,' + encodeURIComponent(contentsCss)];
+    }
     if (allow == "True") {
         CKEDITOR.editorConfig = function (config) {
             var roxyFilemanurl = '/Roxy_Fileman/fileman/index.html?integration=ckeditor';
@@ -76,13 +83,13 @@
             url += "&type=image";
         }
 
-        CKEDITOR.replace("@Html.NameFor(model => model)", {
-            filebrowserBrowseUrl: roxyFileman,
-            filebrowserImageBrowseUrl: url,
-            removeDialogTabs: 'link:upload;image:upload'
-        });
+        editorOptions.filebrowserBrowseUrl = roxyFileman;
+        editorOptions.filebrowserImageBrowseUrl = url;
+        editorOptions.removeDialogTabs = 'link:upload;image:upload';
+
+        CKEDITOR.replace("@Html.NameFor(model => model)", editorOptions);
     }
     else {
-        CKEDITOR.replace('@Html.NameFor(model => model)');
+        CKEDITOR.replace('@Html.NameFor(model => model)', editorOptions);
     }
 </script>
