@@ -56,8 +56,17 @@
     var contentsCss = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(contentsCss));
     var editorOptions = {};
 
+    editorOptions.contentsCss = ['/Plugins/SSI.Editor.CKEditor/Scripts/ckeditor/contents.css'];
+
     if (contentsCss) {
-        editorOptions.contentsCss = ['/Plugins/SSI.Editor.CKEditor/Scripts/ckeditor/contents.css', 'data:text/css;charset=utf-8,' + encodeURIComponent(contentsCss)];
+        editorOptions.on = editorOptions.on || {};
+        editorOptions.on.instanceReady = function (evt) {
+            var editorDocument = evt.editor.document;
+            var styleElement = editorDocument.createElement('style');
+            styleElement.setAttribute('type', 'text/css');
+            styleElement.setHtml(contentsCss);
+            editorDocument.getHead().append(styleElement);
+        };
     }
     if (allow == "True") {
         CKEDITOR.editorConfig = function (config) {
