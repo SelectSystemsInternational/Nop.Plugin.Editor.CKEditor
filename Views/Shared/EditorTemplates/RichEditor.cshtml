@@ -12,6 +12,7 @@
     var allowRoxyFileman = await permissionService.AuthorizeAsync(StandardPermission.System.HTML_EDITOR_MANAGE_PICTURES);
 
     var random = CommonHelper.GenerateRandomInteger();
+    var contentsCss = ViewData["nop.RichEditor.ContentsCss"]?.ToString() ?? string.Empty;
 
 }
 
@@ -51,11 +52,26 @@
                     url += "&type=image";
                 }
 
-                CKEDITOR.replace("@Html.NameFor(model => model)", {
+                var contentsCss = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(contentsCss));
+                var editorOptions = {
                     filebrowserBrowseUrl: roxyFileman,
                     filebrowserImageBrowseUrl: url,
-                    removeDialogTabs: 'link:upload;image:upload'
-                });
+                    removeDialogTabs: 'link:upload;image:upload',
+                    contentsCss: ['/Plugins/SSI.Editor.CKEditor/Scripts/ckeditor/contents.css']
+                };
+
+                if (contentsCss) {
+                    editorOptions.on = editorOptions.on || {};
+                    editorOptions.on.instanceReady = function (evt) {
+                        var editorDocument = evt.editor.document;
+                        var styleElement = editorDocument.createElement('style');
+                        styleElement.setAttribute('type', 'text/css');
+                        styleElement.setHtml(contentsCss);
+                        editorDocument.getHead().append(styleElement);
+                    };
+                }
+
+                CKEDITOR.replace("@Html.NameFor(model => model)", editorOptions);
 
                 return true;
             }
