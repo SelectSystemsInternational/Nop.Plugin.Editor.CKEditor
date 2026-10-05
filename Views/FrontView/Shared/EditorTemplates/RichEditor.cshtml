@@ -19,8 +19,6 @@
     //Sample setting value (below):
     //settings.plugins.push('print'); settings.toolbar += ' | print';
     var additionalEditorSettings = adminAreaSettings.RichEditorAdditionalSettings;
-    //is java-script supported?
-    var allowJavaScript = adminAreaSettings.RichEditorAllowJavaScript;
 
     //allow HTML body? Full page? - http://www.tinymce.com/wiki.php/Plugin:fullpage
     //false by default
@@ -30,20 +28,15 @@
     var extended_valid_elements = new List<string>();
     var valid_children = new List<string>();
 
-    if (allowJavaScript)
-    {
-        extended_valid_elements.Add("script[charset|defer|language|src|type]");
-        valid_children.Add("+body[script]");
-    }
+    extended_valid_elements.Add("script[charset|defer|language|src|type]");
+    valid_children.Add("+body[script]");
 
-    if (adminAreaSettings.RichEditorAllowStyleTag)
-    {
-        extended_valid_elements.Add("style[dir<ltr?rtl|lang|media|title|type]");
-        extended_valid_elements.Add("link[dir<ltr?rtl|href|hreflang|lang|media|rel|rev|title|target|type]");
+    extended_valid_elements.Add("style[dir<ltr?rtl|lang|media|title|type]");
+    extended_valid_elements.Add("link[dir<ltr?rtl|href|hreflang|lang|media|rel|rev|title|target|type]");
 
-        valid_children.Add("+body[style]");
-        valid_children.Add("+body[link]");
-    }
+    valid_children.Add("+body[style]");
+    valid_children.Add("+body[link]");
+
 }
 
 <!script src="/Plugins/SSI.Editor.CKEditor/Scripts/ckeditor/ckeditor.js"></!script>
